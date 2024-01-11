@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LineService } from './line.service';
-import { middleware, messagingApi, WebhookEvent } from '@line/bot-sdk';
+import { messagingApi, WebhookEvent } from '@line/bot-sdk';
 const { MessagingApiClient } = messagingApi;
+import { OpenAI } from 'openai';
 
 @Controller('webhook/line')
 export class LineController {
@@ -9,6 +10,8 @@ export class LineController {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
     channelSecret: process.env.LINE_CHANNEL_SECRET,
   };
+
+  openAi: OpenAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   constructor(private readonly lineService: LineService) {}
 
@@ -21,7 +24,11 @@ export class LineController {
     if (event.message.type !== 'text') return;
 
     const message = event.message.text;
-    console.log(message);
+
+    const completion = this.openAi.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: message }],
+    });
 
     const client = new MessagingApiClient({
       channelAccessToken: this.config.channelAccessToken,
@@ -29,7 +36,7 @@ export class LineController {
 
     client.replyMessage({
       replyToken: event.replyToken,
-      messages: [{ type: 'text', text: 'うるせぇ！' }],
+      messages: [{ type: 'text', text: completion.data.choices[0].message }],
     });
 
     return;
