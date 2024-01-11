@@ -36,4 +36,11 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('生成AIについて教えて。嘘を交えて。');
   });
+
+  it('POST /webhook/line', () => {
+    return request(app.getHttpServer())
+      .post('/webhook/line')
+      .expect(201)
+      .expect('webhook');
+  });
 });
