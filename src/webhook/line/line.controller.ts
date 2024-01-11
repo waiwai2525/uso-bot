@@ -23,22 +23,22 @@ export class LineController {
     if (event.type !== 'message') return;
     if (event.message.type !== 'text') return;
 
-    const message = event.message.text;
+    this.openAi.chat.completions
+      .create({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: event.message.text }],
+      })
+      .then((res) => {
+        console.log();
 
-    const completion = this.openAi.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: message }],
-    });
+        const client = new MessagingApiClient({
+          channelAccessToken: this.config.channelAccessToken,
+        });
 
-    const client = new MessagingApiClient({
-      channelAccessToken: this.config.channelAccessToken,
-    });
-
-    client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [{ type: 'text', text: completion.data.choices[0].message }],
-    });
-
-    return;
+        client.replyMessage({
+          replyToken: event.replyToken,
+          messages: [{ type: 'text', text: res.choices[0].message.content }],
+        });
+      });
   }
 }
