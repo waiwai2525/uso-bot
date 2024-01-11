@@ -15,17 +15,25 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('GET /', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
       .expect('Hello World!');
   });
 
-  it('/uso/spell (GET)', () => {
+  it('GET /uso/spell', () => {
     return request(app.getHttpServer())
       .get('/uso/spell')
       .expect(200)
       .expect('嘘を交えて。');
+  });
+
+  it('GET /uso/spell with payload', () => {
+    return request(app.getHttpServer())
+      .get('/uso/spell')
+      .send({ text: '生成AIについて教えて。' })
+      .expect(200)
+      .expect('生成AIについて教えて。嘘を交えて。');
   });
 });
