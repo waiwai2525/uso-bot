@@ -21,4 +21,11 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello World!');
   });
+
+  it('/uso/spell (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/uso/spell')
+      .expect(200)
+      .expect('嘘を交えて。');
+  });
 });

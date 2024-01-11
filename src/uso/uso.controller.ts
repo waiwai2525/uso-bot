@@ -5,8 +5,8 @@ import { UsoService } from './uso.service';
 export class UsoController {
   constructor(private readonly usoService: UsoService) {}
 
-  // GET /uso
-  @Get()
+  // GET /uso/spell
+  @Get('spell')
   generateSpell(): string {
     return this.usoService.generateSpell();
   }
