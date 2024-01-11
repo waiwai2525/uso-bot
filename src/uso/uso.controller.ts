@@ -7,7 +7,7 @@ export class UsoController {
 
   // GET /uso
   @Get()
-  getItems(): string {
+  generateSpell(): string {
     return this.usoService.generateSpell();
   }
 }
