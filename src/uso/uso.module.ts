@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsoController } from './uso.controller';
-import { UsoService } from './uso.service';
+import { SpellController } from './spell.controller';
+import { SpellService } from './spell.service';
 
 @Module({
   imports: [],
-  controllers: [UsoController],
-  providers: [UsoService],
+  controllers: [SpellController],
+  providers: [SpellService],
 })
 export class UsoModule {}
