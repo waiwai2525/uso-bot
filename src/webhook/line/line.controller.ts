@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { Body, Controller, Post } from '@nestjs/common';
 import { LineService } from './line.service';
 import { messagingApi, WebhookEvent } from '@line/bot-sdk';
