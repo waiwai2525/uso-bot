@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { Body, Controller, Post } from '@nestjs/common';
-import { LineService } from './line.service';
+import { SpellService } from '../spell.service';
 import { messagingApi, WebhookEvent } from '@line/bot-sdk';
 const { MessagingApiClient } = messagingApi;
 import { OpenAI } from 'openai';
@@ -16,7 +16,7 @@ export class LineController {
 
   openAi: OpenAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  constructor(private readonly lineService: LineService) {}
+  constructor(private readonly spellService: SpellService) {}
 
   // POST /webhook/line
   @Post()

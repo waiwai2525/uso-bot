@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { LineController } from './line.controller';
-import { LineService } from './line.service';
+import { SpellService } from '../spell.service';
 
 @Module({
   imports: [],
   controllers: [LineController],
-  providers: [LineService],
+  providers: [SpellService],
 })
 export class LineModule {}

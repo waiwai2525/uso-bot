@@ -22,16 +22,16 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  it('GET /uso/spell', () => {
+  it('GET /webhook', () => {
     return request(app.getHttpServer())
-      .get('/uso/spell')
+      .get('/webhook')
       .expect(200)
       .expect('嘘を交えて。');
   });
 
-  it('GET /uso/spell with payload', () => {
+  it('GET /webhook with payload', () => {
     return request(app.getHttpServer())
-      .get('/uso/spell')
+      .get('/webhook')
       .send({ text: '生成AIについて教えて。' })
       .expect(200)
       .expect('生成AIについて教えて。嘘を交えて。');

@@ -2,11 +2,11 @@ import { Controller, Get, Body } from '@nestjs/common';
 import { SpellService } from './spell.service';
 import { AttachSpellDto } from './attach-spell.dto';
 
-@Controller('uso/spell')
-export class SpellController {
+@Controller('webhook')
+export class WebhookController {
   constructor(private readonly spellService: SpellService) {}
 
-  // GET /uso/spell
+  // GET /webhook
   @Get()
   attachSpell(@Body() body: AttachSpellDto): string {
     if (!body.text) return this.spellService.generateSpell();

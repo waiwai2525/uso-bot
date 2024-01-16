@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LineController } from './line.controller';
-import { LineService } from './line.service';
+import { SpellService } from '../spell.service';
 
 describe('LineController', () => {
   let lineController: LineController;
@@ -8,13 +8,13 @@ describe('LineController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [LineController],
-      providers: [LineService],
+      providers: [SpellService],
     }).compile();
 
     lineController = app.get<LineController>(LineController);
   });
 
   it('webhook()', () => {
-    expect(lineController.webhook()).toBe('webhook');
+    expect(lineController.webhook(undefined)).toBe('webhook');
   });
 });
