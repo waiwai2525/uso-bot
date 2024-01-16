@@ -4,8 +4,8 @@ dotenv.config();
 import { Body, Controller, Post } from '@nestjs/common';
 import { SpellService } from '../spell.service';
 import { messagingApi, WebhookEvent } from '@line/bot-sdk';
+import { AiService } from '../ai.service';
 const { MessagingApiClient } = messagingApi;
-import { OpenAI } from 'openai';
 
 @Controller('webhook/line')
 export class LineController {
@@ -14,9 +14,21 @@ export class LineController {
     channelSecret: process.env.LINE_CHANNEL_SECRET,
   };
 
-  openAi: OpenAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  constructor(
+    private readonly spellService: SpellService,
+    private readonly aiService: AiService,
+  ) {}
 
-  constructor(private readonly spellService: SpellService) {}
+  sendReply(channelAccessToken: string, replyToken: string, text: string) {
+    const client = new MessagingApiClient({
+      channelAccessToken: channelAccessToken,
+    });
+
+    client.replyMessage({
+      replyToken: replyToken,
+      messages: [{ type: 'text', text: text }],
+    });
+  }
 
   // POST /webhook/line
   @Post()
@@ -26,22 +38,14 @@ export class LineController {
     if (event.type !== 'message') return;
     if (event.message.type !== 'text') return;
 
-    this.openAi.chat.completions
-      .create({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: event.message.text }],
-      })
-      .then((res) => {
-        console.log();
+    const message = this.spellService.attachSpell(event.message.text);
 
-        const client = new MessagingApiClient({
-          channelAccessToken: this.config.channelAccessToken,
-        });
-
-        client.replyMessage({
-          replyToken: event.replyToken,
-          messages: [{ type: 'text', text: res.choices[0].message.content }],
-        });
-      });
+    this.aiService.chat(message).then((response) => {
+      this.sendReply(
+        this.config.channelAccessToken,
+        event.replyToken,
+        response,
+      );
+    });
   }
 }
