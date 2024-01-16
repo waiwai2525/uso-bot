@@ -1,73 +1,61 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# うそボット
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+嘘をつくチャットAIです。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![1](./docs/images/LINE_capture_727085733.436040.jpg)
 
-## Description
+![2](./docs/images/LINE_capture_727085715.891944.jpg)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 概要
 
-## Installation
+ドヤ顔で適当なことを言うことにおいて、チャットAIの右に出るものはありません。
 
-```bash
-$ npm install
-```
+本サービスでは、そんなチャットAIとどうしようもない会話を楽しむことができます。
 
-## Running the app
+## 使用技術
 
-```bash
-# development
-$ npm run start
+フロントエンドはLINE Messaging APIを使用することで、開発コストを下げ、利用者側も手軽に利用できるようにしました。
 
-# watch mode
-$ npm run start:dev
+バックエンドはNode.js環境のNest.jsを使用してREST APIを構成しています。
 
-# production mode
-$ npm run start:prod
-```
+- フロントエンド
+  - LINE Messaging API
+  - Webhook
+- バックエンド
+  - Typescript
+  - Nest.js
+  - ChatGPT API (gpt-3.5-turbo)
+- サーバー
+  - Render
 
-## Test
+## システム構成図
 
-```bash
-# unit tests
-$ npm run test
+![3](./docs/images/InfraDiagram.drawio.png)
 
-# e2e tests
-$ npm run test:e2e
+## 使い方
 
-# test coverage
-$ npm run test:cov
-```
+QRコードまたはIDからボットを友達追加します。
 
-## Support
+あとは会話するだけです。
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+※非公開
 
-## Stay in touch
+## 工夫した点
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 意図的に嘘をつかせる
 
-## License
+"〇〇について嘘をついて。"と言っても答えてくれません。（意図的に嘘をつくことは難しいようです。）
 
-Nest is [MIT licensed](LICENSE).
+本サービスでは、"〇〇。嘘を交えて。"というなぜか上手くいく呪文を用いて嘘をつかせています。
+
+### 開発工程
+
+単体テストとE2Eテストを先に書いた後に実装する工程をふむテスト駆動開発を行いました。これにより、サーバーへのデプロイを最小限に抑え、バグの少ないシステムにできたと思います。
+
+## 改善点
+
+### 動作の遅さ
+
+メッセージを送信してから返信まで10数秒ほどかかります。
+
+これは、ChatGPT APIの遅さに加え、サーバーがシンガポールリージョンになっていることが原因だと考えられます。
